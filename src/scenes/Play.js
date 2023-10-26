@@ -104,13 +104,14 @@ class Play extends Phaser.Scene {
 
     updateTimer(){
         this.currTime -= 1;
+        this.elapsedTime += 1;
         this.timeText.setText('Time: ' + this.currTime);
         if(this.currTime > 0){
             if(Math.ceil(this.elapsedTime) == 30){
-                this.ship01.shipSpeed += 0.03;
-                this.ship02.shipSpeed += 0.03;
-                this.ship03.shipSpeed += 0.03;
-                this.ship04.shipSpeed += 0.03;
+                this.ship01.shipSpeed += 2;
+                this.ship02.shipSpeed += 2;
+                this.ship03.shipSpeed += 2;
+                this.ship04.shipSpeed += 2;
             }
         }else if(this.currTime <= 0){
             this.currTime = 0;

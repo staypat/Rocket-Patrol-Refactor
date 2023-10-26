@@ -15,12 +15,14 @@
 //   -Implement a new timing/scoring mechanism that adds time to the clock for successful hits
 // Citations: My implementations are all original work except for create 4 new explosion sound effects and randomize which one plays on impact.
 // That one was taken from Nathan's CleanPop.
+// Design choices: Since time doesn't update on every frame but updates through an event function every second, every time the player hits a
+// spaceship, the time given/shown to the player on the UI doesn't immediately update. Rather, the time will update accordingly 1 second later.
 
 let config = {
     type: Phaser.AUTO,
     width: 640,
     height: 480,
-    scene: [Menu, Play],
+    scene: [Menu, Play]
 }
 let game = new Phaser.Game(config);
 // reserve keyboad vars
