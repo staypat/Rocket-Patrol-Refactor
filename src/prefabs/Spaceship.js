@@ -17,7 +17,7 @@ class Spaceship extends Phaser.GameObjects.Sprite {
             this.flipX = true;
             this.x += this.shipSpeed;
         }
-        if(this.x <= 0 - this.width && this.direction <= 0.5) {
+        if(this.x <= this.width && this.direction <= 0.5) {
             this.reset();
         }
         if(this.x > this.width && this.direction > 0.5) {
@@ -28,13 +28,15 @@ class Spaceship extends Phaser.GameObjects.Sprite {
     reset() {
         if(this.x <= 0 - this.width && this.direction <= 0.5 && this.texture.key != 'fastspaceship'){
             this.x = game.config.width;
-        }else if(this.x <= 0 - this.width && this.direction <= 0.5 && this.texture.key == 'fastspaceship'){
-            this. x = borderPadding;
         }
         if(this.x > game.config.width && this.direction > 0.5 && this.texture.key != 'fastspaceship'){
             this.x = 0 - this.width;
-        }else if(this.x <= 0 - this.width && this.direction <= 0.5 && this.texture.key == 'fastspaceship'){
-            this. x = 0 - borderPadding;
+        }
+        if(this.x <= this.width  && this.direction <= 0.5 && this.texture.key == 'fastspaceship'){
+            this.x = game.config.width - this.width * 2;
+        }
+        if(this.x > game.config.width - this.width - borderPadding && this.direction > 0.5 && this.texture.key == 'fastspaceship'){
+            this.x = this.width;
         }
     }
 }
