@@ -62,7 +62,7 @@ class Play extends Phaser.Scene {
         this.timeText = this.add.text(game.config.width - borderUISize * 15 - 4 , borderUISize + borderPadding*2, 'Time: ' + this.currTime, {fontFamily: 'Courier', fontSize: '28px', backgroundColor: '#F3B131', color: '#843605', align: 'right', padding: { top: 5, bottom: 5,}, fixedWidth: 0});
     }
 
-    update(){
+    update(time, deltaTime){
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
             this.scene.restart();
@@ -77,9 +77,9 @@ class Play extends Phaser.Scene {
             this.ship02.update();
             this.ship03.update();
             this.ship04.update();
-            if(this.currTime > 0){
-                this.currTime -= 1/60;
-                this.elapsedTime += 1/60;
+            if(time > 0){
+                this.currTime -= deltaTime / 1000;
+                this.elapsedTime += deltaTime / 1000;
                 if(Math.ceil(this.elapsedTime) == 30){
                     this.ship01.shipSpeed += 0.06;
                     this.ship02.shipSpeed += 0.06;
