@@ -60,9 +60,15 @@ class Play extends Phaser.Scene {
         this.currTime = game.settings.gameTimer / 1000;
         this.elapsedTime = 0;
         this.timeText = this.add.text(game.config.width - borderUISize * 15 - 4 , borderUISize + borderPadding*2, 'Time: ' + this.currTime, {fontFamily: 'Courier', fontSize: '28px', backgroundColor: '#F3B131', color: '#843605', align: 'right', padding: { top: 5, bottom: 5,}, fixedWidth: 0});
+        this.countdownTimer = this.time.addEvent({
+            delay: 1000,
+            callback: this.updateTimer,
+            callbackScope: this,
+            loop: true
+        });
     }
 
-    update(time, deltaTime){
+    update(){
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
             this.scene.restart();
@@ -77,45 +83,6 @@ class Play extends Phaser.Scene {
             this.ship02.update();
             this.ship03.update();
             this.ship04.update();
-            if(time > 0){
-                this.currTime -= deltaTime / 1000;
-                this.elapsedTime += deltaTime / 1000;
-                if(Math.ceil(this.elapsedTime) == 30){
-                    this.ship01.shipSpeed += 0.06;
-                    this.ship02.shipSpeed += 0.06;
-                    this.ship03.shipSpeed += 0.06;
-                    this.ship04.shipSpeed += 0.06;
-                }
-                this.timeText.setText('Time: ' + Math.ceil(this.currTime));
-            }else if(this.currTime <= 0){
-                this.currTime = 0;
-                this.timeText.setText('Time: 0');
-                this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', {
-                    fontFamily: 'Courier',
-                    fontSize: '28px',
-                    backgroundColor: '#F3B131',
-                    color: '#843605',
-                    align: 'right',
-                    padding: {
-                        top: 5,
-                        bottom: 5,
-                    },
-                    fixedWidth: 0
-                }).setOrigin(0.5);
-                this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', {
-                    fontFamily: 'Courier',
-                    fontSize: '28px',
-                    backgroundColor: '#F3B131',
-                    color: '#843605',
-                    align: 'right',
-                    padding: {
-                        top: 5,
-                        bottom: 5,
-                    },
-                    fixedWidth: 0
-                }).setOrigin(0.5);
-                this.gameOver = true;
-            }
         }
         if(this.checkCollision(this.p1Rocket, this.ship03)){
             this.p1Rocket.reset();
@@ -132,6 +99,47 @@ class Play extends Phaser.Scene {
         if(this.checkCollision(this.p1Rocket, this.ship04)){
             this.p1Rocket.reset();
             this.shipExplode(this.ship04);
+        }
+    }
+
+    updateTimer(){
+        this.currTime -= 1;
+        this.timeText.setText('Time: ' + this.currTime);
+        if(this.currTime > 0){
+            if(Math.ceil(this.elapsedTime) == 30){
+                this.ship01.shipSpeed += 0.03;
+                this.ship02.shipSpeed += 0.03;
+                this.ship03.shipSpeed += 0.03;
+                this.ship04.shipSpeed += 0.03;
+            }
+        }else if(this.currTime <= 0){
+            this.currTime = 0;
+            this.timeText.setText('Time: 0');
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', {
+                fontFamily: 'Courier',
+                fontSize: '28px',
+                backgroundColor: '#F3B131',
+                color: '#843605',
+                align: 'right',
+                padding: {
+                    top: 5,
+                    bottom: 5,
+                },
+                fixedWidth: 0
+            }).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', {
+                fontFamily: 'Courier',
+                fontSize: '28px',
+                backgroundColor: '#F3B131',
+                color: '#843605',
+                align: 'right',
+                padding: {
+                    top: 5,
+                    bottom: 5,
+                },
+                fixedWidth: 0
+            }).setOrigin(0.5);
+            this.gameOver = true;
         }
     }
 
